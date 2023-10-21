@@ -178,7 +178,7 @@ export const StyledRegisterPage = styled.div`
 
     .secApresentation {
       height: auto;
-      margin-top: 10px;
+      margin-top: 0.625rem;
     }
 
     .secRegister {

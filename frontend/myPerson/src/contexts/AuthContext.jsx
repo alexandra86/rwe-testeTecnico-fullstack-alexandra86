@@ -10,10 +10,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [newLoading, setNewLoading] = useState(true);
-  //   const [modalIsBeerOpen, setIsBeerOpen] = useState(false);
-  //   const [selectedBeer, setSelectedBeer] = useState(null);
-  //   const [filteredBeer, setFilteredBeer] = useState([]);
-  //   const [modalIsFilterOpen, setIsFilterOpen] = useState(false);
+  const [modalIsEditUserOpen, setIsEditUserOpen] = useState(false);
+  const [selectUser, setSelectUser] = useState(null);
+  const [modalIsDeleteUserOpen, setIsDeleteUserOpen] = useState(false);
+  const [selectDeleteUser, setSelectDeleteUser] = useState(null);
 
   const navigate = useNavigate();
 
@@ -84,6 +84,58 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const handleEditUserModal = () => {
+    setIsEditUserOpen(!modalIsEditUserOpen);
+  };
+
+  const EditUser = async (data) => {
+    try {
+      setLoading(true);
+
+      await api.patch(`/users/${data.id}`, data);
+      getUser();
+
+      setIsEditUserOpen(false);
+      toast.success("Profile changed successfully! 😎");
+    } catch (error) {
+      toast.error("Something is wrong! 🤨");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteUserModal = (user) => {
+    setSelectDeleteUser(user);
+    setIsDeleteUserOpen(!modalIsDeleteUserOpen);
+  };
+
+  const DeleteToken = () => {
+    localStorage.removeItem("@TOKENCLIENT");
+    localStorage.removeItem("@TOKEN");
+    localStorage.removeItem("@USER_ID");
+  };
+
+  const LoginRedirect = () => {
+    navigate("/");
+  };
+
+  const RemoveUser = async (userId) => {
+    try {
+      setLoading(true);
+
+      await api.delete(`/users/${userId}`);
+      getUser();
+
+      toast.info("Profile removed successfully! 😜");
+      DeleteToken();
+      LoginRedirect();
+    } catch (error) {
+      toast.error("Something is wrong! 🤨");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -96,6 +148,18 @@ export const AuthProvider = ({ children }) => {
         setNewLoading,
         NewRegister,
         getUser,
+        modalIsEditUserOpen,
+        setIsEditUserOpen,
+        handleEditUserModal,
+        selectUser,
+        setSelectUser,
+        EditUser,
+        modalIsDeleteUserOpen,
+        setIsDeleteUserOpen,
+        selectDeleteUser,
+        setSelectDeleteUser,
+        handleDeleteUserModal,
+        RemoveUser,
       }}
     >
       {children}

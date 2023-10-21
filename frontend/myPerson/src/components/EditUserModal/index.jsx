@@ -1,197 +1,185 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { StyledRegisterPage } from "./style";
-import { registerSchema } from "./registerSchema";
+import { createPortal } from "react-dom";
+import { StyledContainerModal } from "./style";
+import { editUserSchema } from "./editUserSchema";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Loading } from "../../components/Loading";
 import InputMask from "react-input-mask";
-import { useContext } from "react";
-import logo from "../../assets/logo.png";
 
-export const RegisterPage = () => {
-  const { loading, NewRegister, setLoading } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const goLoginClick = () => {
-    navigate("/");
-  };
+export const EditUserModal = () => {
+  const { handleEditUserModal, EditUser, loading, user } =
+    useContext(AuthContext);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm({
     mode: "onBlur",
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      birthday: "",
-      bio: "",
-      image: "",
-      linkedin: "",
-      portfolio: "",
-      facebook: "",
-      gender: "",
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      birthday: user.birthday,
+      bio: user.bio,
+      image: user.image,
+      linkedin: user.linkedin,
+      portfolio: user.portfolio,
+      facebook: user.facebook,
+      gender: user.gender,
     },
-    resolver: yupResolver(registerSchema),
+    resolver: yupResolver(editUserSchema),
   });
 
   const submit = async (data) => {
-    setLoading(true);
-    setTimeout(async () => {
-      const information = { ...data };
-      await NewRegister(information);
-      reset();
-    }, 1000);
+    const information = { ...data };
+    await EditUser(information);
+
+    reset();
   };
-  return (
-    <StyledRegisterPage>
-      <section className="secApresentation">
-        <img src={logo} alt="punk beer image" className="logo" />
-      </section>
-      <section className="secRegister">
-        <div className="areaRegisterAndGoToLogin">
-          <h1 className="titleRegister">Register</h1>
-          <button className="btGoToLogin" onClick={goLoginClick}>
-            Return to login
+
+  const modalUserContent = (
+    <StyledContainerModal>
+      <div className="modalContent">
+        <div className="headerModal">
+          <h2 className="titleModal">Edit Profile</h2>
+          <button
+            onClick={() => handleEditUserModal()}
+            className="btCloseModal"
+          >
+            X
           </button>
         </div>
-        <form
-          className="formRegister"
-          onSubmit={handleSubmit(submit)}
-          noValidate
-        >
-          <label htmlFor="name" className="lbRegister">
+        <form className="formModal" onSubmit={handleSubmit(submit)} noValidate>
+          <label htmlFor="fullName" className="labelModal">
             Name
           </label>
           <input
             type="text"
+            name="name"
             placeholder="Enter your name here..."
-            className="iptRegister"
+            className="inputModal"
             {...register("name")}
           />
           {errors.name && <p className="areaError">{errors.name.message}</p>}
-          <label htmlFor="email" className="lbRegister">
+
+          <label htmlFor="email" className="labelModal">
             Email
           </label>
           <input
             type="email"
+            name="email"
             placeholder="Enter your email here..."
-            className="iptRegister"
+            className="inputModal"
             {...register("email")}
           />
           {errors.email && <p className="areaError">{errors.email.message}</p>}
-          <label htmlFor="password" className="lbRegister">
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="Enter your password here..."
-            className="iptRegister"
-            {...register("password")}
-          />
-          {errors.password && (
-            <p className="areaError">{errors.password.message}</p>
-          )}
 
-          <label htmlFor="phone" className="lbRegister">
+          <label htmlFor="phone" className="labelModal">
             Phone
           </label>
           <InputMask
             type="text"
             mask="(99) 99999-9999"
+            name="phone"
             placeholder="Enter your phone here..."
-            className="iptRegister"
+            className="inputModal"
             {...register("phone")}
           />
           {errors.phone && <p className="areaError">{errors.phone.message}</p>}
 
-          <label htmlFor="birthday" className="lbRegister">
+          <label htmlFor="birthday" className="labelModal">
             Birthday
           </label>
           <InputMask
             type="text"
             mask="99/99/9999"
+            name="birthday"
             placeholder="Enter your birthday here..."
-            className="iptRegister"
+            className="inputModal"
             {...register("birthday")}
           />
-          {errors?.birthday && (
+          {errors.birthday && (
             <p className="areaError">{errors.birthday.message}</p>
           )}
 
-          <label htmlFor="bio" className="lbRegister">
+          <label htmlFor="bio" className="labelModal">
             Bio
           </label>
           <input
             type="text"
+            name="bio"
             placeholder="Insert your bio here..."
-            className="iptRegister"
+            className="inputModal"
             {...register("bio")}
           />
-          {errors?.bio && <p className="areaError">{errors.bio.message}</p>}
+          {errors.bio && <p className="areaError">{errors.bio.message}</p>}
 
-          <label htmlFor="image" className="lbRegister">
+          <label htmlFor="image" className="labelModal">
             Image
           </label>
           <input
             type="url"
-            placeholder="Insert your image link..."
-            className="iptRegister"
+            name="image"
+            placeholder="Digite o link da sua imagem"
+            className="inputModal"
             {...register("image")}
           />
-          {errors?.image && <p className="areaError">{errors.image.message}</p>}
+          {errors.image && <p className="areaError">{errors.image.message}</p>}
 
-          <label htmlFor="linkedin" className="lbRegister">
+          <label htmlFor="linkedin" className="labelModal">
             Linkedin
           </label>
           <input
             type="url"
+            name="linkedin"
             placeholder="Insert your Linkedin link..."
-            className="iptRegister"
+            className="inputModal"
             {...register("linkedin")}
           />
-          {errors?.linkedin && (
+          {errors.linkedin && (
             <p className="areaError">{errors.linkedin.message}</p>
           )}
 
-          <label htmlFor="portfolio" className="lbRegister">
+          <label htmlFor="portfolio" className="labelModal">
             Portfólio
           </label>
           <input
             type="url"
+            name="portfolio"
             placeholder="Insert your Portfólio link..."
-            className="iptRegister"
+            className="inputModal"
             {...register("portfolio")}
           />
-          {errors?.portfolio && (
+          {errors.portfolio && (
             <p className="areaError">{errors.portfolio.message}</p>
           )}
 
-          <label htmlFor="facebook" className="lbRegister">
+          <label htmlFor="facebook" className="labelModal">
             Facebook
           </label>
           <input
             type="url"
+            name="facebook"
             placeholder="Insert your Facebook link..."
-            className="iptRegister"
+            className="inputModal"
             {...register("facebook")}
           />
-          {errors?.facebook && (
+          {errors.facebook && (
             <p className="areaError">{errors.facebook.message}</p>
           )}
 
-          <label htmlFor="gender" className="lbRegister">
-            Gender
+          <label htmlFor="gender" className="labelModal">
+            Selecionar Gênero
           </label>
           <select
             name="gender"
             id="gender"
-            className="iptRegister"
+            className="selectModal"
             {...register("gender")}
           >
             <option value="">Select</option>
@@ -203,11 +191,15 @@ export const RegisterPage = () => {
           {errors.gender && (
             <p className="areaError">{errors.gender.message}</p>
           )}
-          <button type="submit" className="btRegister" disabled={loading}>
-            {loading ? <Loading /> : "Register"}
+          <button type="submit" className="btRegisterModal" disabled={loading}>
+            {loading ? <Loading /> : "Edit Profile"}
           </button>
         </form>
-      </section>
-    </StyledRegisterPage>
+      </div>
+    </StyledContainerModal>
+  );
+  return createPortal(
+    modalUserContent,
+    document.getElementById("modalUserEdit-root")
   );
 };

@@ -135,9 +135,9 @@ A tabela users é definida como:
 | ------ | ---------- | ------------------------------------------------------------- |
 | POST   | /users     | Criação de um usuário.                                        |
 | GET    | /users     | Lista todos os usuários.                                      |
-| GET    | /users/:id | Lista um usuário, usando seu ID como parâmetro                |
-| PATCH  | /users/:id | Atualiza os dados de um usuário, usando seu ID como parâmetro |
-| DELETE | /users/:id | Deleta um usuário, usando seu ID como parâmetro               |
+| GET    | /users/:userId | Lista um usuário, usando seu ID como parâmetro                |
+| PATCH  | /users/::userId| Atualiza os dados de um usuário, usando seu ID como parâmetro |
+| DELETE | /users/::userId | Deleta um usuário, usando seu ID como parâmetro               |
 
 ---
 

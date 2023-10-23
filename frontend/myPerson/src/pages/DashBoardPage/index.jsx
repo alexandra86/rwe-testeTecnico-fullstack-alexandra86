@@ -84,7 +84,12 @@ export const DashBoardPage = () => {
                 <h2 className="userName">Nome: {user.name}</h2>
                 <h3 className="userOtherInforms">Email: {user.email}</h3>
                 <h3 className="userOtherInforms">Phone: {user.phone}</h3>
-                <h3 className="userOtherInforms">Birthday: {user.birthday}</h3>
+                <h3 className="userOtherInforms">
+                  Birthday:{" "}
+                  {new Date(user.birthday).toLocaleDateString("pt-BR", {
+                    timeZone: "UTC",
+                  })}
+                </h3>
                 {user.bio ? (
                   <p className="userOtherInforms">Bio: {user.bio}</p>
                 ) : (

@@ -24,7 +24,9 @@ export const EditUserModal = () => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      birthday: user.birthday,
+      birthday: new Date(user.birthday).toLocaleDateString("pt-BR", {
+        timeZone: "UTC",
+      }),
       bio: user.bio,
       image: user.image,
       linkedin: user.linkedin,

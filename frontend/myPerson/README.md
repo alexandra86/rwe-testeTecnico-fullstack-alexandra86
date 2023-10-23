@@ -43,4 +43,4 @@ Possui páginas com as seguintes funcionalidades:
 </ul><br>
 
 <h2 font-family="pattaya">Link do Deploy via Vercel</h2><br>
-<a href="" font-family="robotto" font-size="16px">My Person</a>
+<a href="https://my-person-1znnaywkd-alexandra86.vercel.app/" font-family="robotto" font-size="16px">My Person</a>
